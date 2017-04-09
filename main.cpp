@@ -9,10 +9,16 @@ public:
 };
 
 class Player:public User{
+private:
+    int level;
 
+public:
 };
 
 class TestBuilder:public User{
+private:
+
+public:
 
 };
 
