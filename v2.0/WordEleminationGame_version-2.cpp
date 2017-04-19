@@ -27,14 +27,14 @@ public:
     Game(int l = 0) {level = l;}
     ~Game() {}
     static vector<vector<string>>& getWordList() { return wordList; }
-    bool Display();
+    int Display();
     static void InitFromFile();
 };
 /**
  * Game.cpp
  */
 vector<vector<string>> Game::wordList = {};
-bool Game::Display()
+int Game::Display()
 {
     cout << "This the " << level + 1 << "th level : "
          << "There are " << wordList.size() << " levels totally" << endl;
@@ -54,7 +54,14 @@ bool Game::Display()
                  << "Time used: "
                  << timeEnd - timeBegin << endl;
             level++;
-            return true;
+            int point;
+            if(level > 7&&(timeEnd - timeBegin)<10)
+                point = 3;
+            else if(level > 4&&(timeEnd - timeBegin)<4)
+                point = 2;
+            else
+                point = 1;
+            return point;
         }
         else {
             cout << "Your answer is wrong." << endl;
@@ -130,8 +137,8 @@ public:
     int getGrades() {return gainedGrades;}
     int getExperience() {return experience;}
     void quitLogin() {isLogin = false;}
-    void addLevel() {playerLevel++;}
-    void addExperience() {experience++;}
+    void addLevel() {playerLevel+=experience/5;}
+    void addExperience(int exp) {experience+=exp;}
     void addGainedGrades() {gainedGrades++;}
     void SearchPlayer(string& name);
     void SearchTestBuilder(string& name);
@@ -544,20 +551,24 @@ int main()
                     case 1:
 
                         break;
-                    case 2:
-                        if (game.Display()) {
+                    case 2:{
+                        int b=game.Display();
+                        if (b>0) {
                             tempPlayer.addGainedGrades();
                             tempPlayer.addLevel();
+                            tempPlayer.addExperience(b);
                         }
-                        tempPlayer.addExperience();
+                    }
 
                         break;
-                    case 3:
-                        if (game.Display()) {
+                    case 3:{
+                        int b=game.Display();
+                        if (b>0) {
                             tempPlayer.addGainedGrades();
                             tempPlayer.addLevel();
+                            tempPlayer.addExperience(b);
                         }
-                        tempPlayer.addExperience();
+                    }
 
                         break;
                     case 4: {
