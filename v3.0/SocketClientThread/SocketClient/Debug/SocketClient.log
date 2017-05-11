@@ -1,0 +1,23 @@
+﻿生成启动时间为 2017/5/9 星期二 下午 12:23:09。
+     1>项目“D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketClientThread\SocketClient\SocketClient.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\SocketClient.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SocketClient.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Socket.cpp SocketClient.cpp
+         SocketClient.cpp
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketclientthread\socketclient\socketclient.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketclientthread\socketclient\socketclient.cpp(65): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+                 c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(1850) : 参见“inet_addr”的声明
+         Socket.cpp
+         正在生成代码...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketClientThread\Debug\SocketClient.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketClientThread\Debug\SocketClient.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketClientThread\Debug\SocketClient.lib" /MACHINE:X86 /SAFESEH Debug\Socket.obj
+         Debug\SocketClient.obj
+         Debug\stdafx.obj
+     1>Socket.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/SAFESEH”规范)
+         SocketClient.vcxproj -> D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketClientThread\Debug\SocketClient.exe
+     1>已完成生成项目“D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketClientThread\SocketClient\SocketClient.vcxproj”(Rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:25.71

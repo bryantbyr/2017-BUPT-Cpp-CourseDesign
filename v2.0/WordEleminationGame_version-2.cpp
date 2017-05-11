@@ -1,10 +1,3 @@
-/*
-1.每一关的难度要有所增加，体现为如下三个条件中的一个或者多个:单词难度可以递增或者持平（即长度加长或不变）/进行轮数增多（即单词数目如：前三关仅仅通过一个单词就过关，后续需要通过两个，三个甚至更多才过关）/单词显示时间缩短（随着关卡的增加显示时间越来越短）
-2.闯关者每闯过一关，增加一定经验值。经验值会根据闯过的该关卡的关卡号、该关的闯关耗费时间共同决定。当经验值累计到一定程度闯关者等级增加。闯关失败需要重新闯该关
-3.游戏自带词库，而且已经注册的出题者可以为系统出题，即增加词库的新词，已经存在的单词不能再次添加（词库中的单词构成一个单词池，但建议根据单词的长度来组织存储，每次出题时，系统从该单词池中按照关卡难度随机的选择相应长度的单词）。每成功出题一次，更新该出题者的出题数目。出题者等级根据出题人成功出题数目来升级。
-****必须在题目一的基础上进行修改。
-****请根据要求设计每一关的出题方式，注意随着关卡数增加，题目难度增加。请合理处理出题人新添加新词的使用方式，并且新加词组不会影响游戏难度。
-*/
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
@@ -16,13 +9,34 @@
 #include <windows.h>
 using namespace std;
 
+vector<string> split(const  string& s, const string& delim)
+{
+    vector<std::string> elems;
+    size_t pos = 0;
+    size_t len = s.length();
+    size_t delim_len = delim.length();
+    if (delim_len == 0) return elems;
+    while (pos < len)
+    {
+        int find_pos = s.find(delim, pos);
+        if (find_pos < 0)
+        {
+            elems.push_back(s.substr(pos, len - pos));
+            break;
+        }
+        elems.push_back(s.substr(pos, find_pos - pos));
+        pos = find_pos + delim_len;
+    }
+    return elems;
+}
+
 /**
  * Game.h
  */
 class Game {
 private:
     int level;
-    static vector<vector<string>> wordList;//被添加的单词列表
+    static vector<vector<string>> wordList;//卤禄脤铆录脫碌脛碌楼麓脢脕脨卤铆
 public:
     Game(int l = 0) {level = l;}
     ~Game() {}
@@ -76,9 +90,9 @@ int Game::Display()
 void Game::InitFromFile()
 {
     string w;
-    ifstream infile("wordList.txt");
+    ifstream infile("wordList.csv");
     if (!infile) {
-        cout << "File wordList.txt open failed!" << endl;
+        cout << "File wordList.csv open failed!" << endl;
         abort();
     }
     unsigned int i = 0;
@@ -145,6 +159,7 @@ public:
     void RankPlayersByGrades();
     void RankPlayersByExperience();
     static void InitFromFile();
+    void updateInfo();
 };
 /**
  * TestBuilder.h
@@ -176,6 +191,7 @@ public:
     void RankPlayersByTesterLevel();
     void AddWord();
     static void InitFromFile();
+    void updateInfo();
 };
 /**
  * Player.cpp
@@ -184,12 +200,12 @@ bool Player::isLogin = 0;
 vector<Player> Player::playerList = {};
 void Player::Register()
 {
-    ofstream outfile("playerList.txt", ios::out | ios::app);
+    ofstream outfile("playerList.csv", ios::out | ios::app);
     if (!outfile) {
-        cout << "File playerList.txt open failed!" << endl;
+        cout << "File playerList.csv open failed!" << endl;
         abort();
     }
-    outfile << endl << this->getName() << "      " << this->getPassword();
+    outfile << this->getName() << "," << this->getPassword() << "," << this->playerLevel << "," << this->experience << "," << this->gainedGrades << endl;
     outfile.close();
     playerList.push_back(*this);
     cout << "Player successfully registers!" << endl;
@@ -253,20 +269,52 @@ void Player::RankPlayersByExperience()
 }
 void Player::InitFromFile()
 {
-    string n, s;
-    ifstream infile("playerList.txt");
+    string line;
+    vector<string> v;
+    ifstream infile("playerList.csv");
     if (!infile) {
-        cout << "File playerList.txt open failed!" << endl;
+        cout << "File playerList.csv open failed!" << endl;
         abort();
     }
+    getline(infile, line);
     while (!infile.eof())
     {
-        infile >> n;
-        infile >> s;
-        Player player(n, s);
+        getline(infile, line);
+        if(line=="")
+            break;
+        v = split(line, ",");
+        Player player(v[0], v[1], atoi(v[2].c_str()), atoi(v[3].c_str()), atoi(v[3].c_str()));
         playerList.push_back(player);
     }
     infile.close();
+}
+void Player::updateInfo()
+{
+    fstream outfile("playerList.csv", ios::out | ios::in);
+    if (!outfile) {
+        cout << "File playerList.csv open failed!" << endl;
+        abort();
+    }
+    string line;
+    vector<string> v;
+    outfile.seekp(0);
+    getline(outfile, line);
+    streamoff cur_tmp = outfile.tellg();
+    int loc = -getList().size();
+    while (!outfile.eof())
+    {
+        getline(outfile, line);
+        v = split(line, ",");
+        if (strcmp(this->getName().c_str(), v[0].c_str()) == 0) {
+            outfile.seekp(cur_tmp);
+            outfile.seekp(loc, ios::cur );
+            outfile << this->getName() << "," << this->getPassword() << "," << this->playerLevel << "," << this->experience << "," << this->gainedGrades;
+            break;
+        }
+        loc++;
+        cur_tmp = outfile.tellg();
+    }
+    outfile.close();
 }
 /**
  * TestBuilder.cpp
@@ -275,12 +323,12 @@ vector<TestBuilder> TestBuilder::testBuilderList = {};
 bool TestBuilder::isLogin = 0;
 void TestBuilder::Register()
 {
-    ofstream outfile("testerList.txt", ios::out | ios::app);
-    outfile << endl << this->getName() << "      " << this->getPassword();
+    ofstream outfile("testerList.csv", ios::out | ios::app);
     if (!outfile) {
-        cout << "File testerList.txt open failed!" << endl;
+        cout << "File testerList.csv open failed!" << endl;
         abort();
     }
+    outfile << this->getName() << "," << this->getPassword() << "," << this->problemsNumbers << "," << this->testBuilderLevel << endl;
     outfile.close();
     testBuilderList.push_back(*this);
     cout << "Tester successfully registers!" << endl;
@@ -362,9 +410,9 @@ void TestBuilder::AddWord()
         string n;
         vector<string> s1;
         vector<string> s2;
-        ifstream infile("wordList.txt");
+        ifstream infile("wordList.csv");
         if (!infile) {
-            cout << "File wordList.txt open failed!" << endl;
+            cout << "File wordList.csv open failed!" << endl;
             abort();
         }
         while (!infile.eof())
@@ -376,9 +424,9 @@ void TestBuilder::AddWord()
                 s1.push_back(n);
         }
         infile.close();
-        ofstream outfile("wordList.txt");
+        ofstream outfile("wordList.csv");
         if (!outfile) {
-            cout << "File wordList.txt open failed!" << endl;
+            cout << "File wordList.csv open failed!" << endl;
             abort();
         }
         for (unsigned int i = 0; i < s1.size(); i++)
@@ -399,9 +447,9 @@ void TestBuilder::AddWord()
         string n;
         vector<string> s1;
         vector<string> s2;
-        ifstream infile("wordList.txt");
+        ifstream infile("wordList.csv");
         if (!infile) {
-            cout << "File wordList.txt open failed!" << endl;
+            cout << "File wordList.csv open failed!" << endl;
             abort();
         }
         while (!infile.eof())
@@ -413,9 +461,9 @@ void TestBuilder::AddWord()
                 s1.push_back(n);
         }
         infile.close();
-        ofstream outfile("wordList.txt");
+        ofstream outfile("wordList.csv");
         if (!outfile) {
-            cout << "File wordList.txt open failed!" << endl;
+            cout << "File wordList.csv open failed!" << endl;
             abort();
         }
         for (unsigned int i = 0; i < s1.size(); i++)
@@ -433,9 +481,9 @@ void TestBuilder::AddWord()
         vector <string> add;
         add.push_back(s);
         Game::getWordList().push_back(add);
-        ofstream outfile("wordList.txt", ios::out | ios::app);
+        ofstream outfile("wordList.csv", ios::out | ios::app);
         if (!outfile) {
-            cout << "File wordList.txt open failed!" << endl;
+            cout << "File wordList.csv open failed!" << endl;
             abort();
         }
         outfile << endl << s;
@@ -444,20 +492,52 @@ void TestBuilder::AddWord()
 }
 void TestBuilder::InitFromFile()
 {
-    string n, s;
-    ifstream infile("testerList.txt");
+    string line;
+    vector<string> v;
+    ifstream infile("testerList.csv");
     if (!infile) {
-        cout << "File testerList.txt open failed!" << endl;
+        cout << "File testerList.csv open failed!" << endl;
         abort();
     }
+    getline(infile, line);
     while (!infile.eof())
     {
-        infile >> n;
-        infile >> s;
-        TestBuilder tester(n, s);
+        getline(infile, line);
+        if (line == "")
+            break;
+        v = split(line, ",");
+        TestBuilder tester(v[0], v[1], atoi(v[2].c_str()), atoi(v[3].c_str()));
         testBuilderList.push_back(tester);
     }
     infile.close();
+}
+void TestBuilder::updateInfo()
+{
+    fstream outfile("testerList.csv", ios::out | ios::in);
+    if (!outfile) {
+        cout << "File testerList.csv open failed!" << endl;
+        abort();
+    }
+    string line;
+    vector<string> v;
+    outfile.seekp(0);
+    getline(outfile, line);
+    streamoff cur_tmp = outfile.tellg();
+    int loc = -getTestBuilderList().size();
+    while (!outfile.eof())
+    {
+        getline(outfile, line);
+        v = split(line, ",");
+        if (strcmp(this->getName().c_str(), v[0].c_str()) == 0) {
+            outfile.seekp(cur_tmp);
+            outfile.seekp(loc, ios::cur );
+            outfile << this->getName() << "," << this->getPassword() << "," << this->problemsNumbers << "," << this->testBuilderLevel;
+            break;
+        }
+        loc++;
+        cur_tmp = outfile.tellg();
+    }
+    outfile.close();
 }
 
 int main()
@@ -469,17 +549,17 @@ int main()
     TestBuilder::InitFromFile();
     while (choice != 0) {
         cout << "\n\n\n\n" << "              *************************" << endl;
-        //cout <<  "                欢 迎 进入 单 词 消 除 游 戏 系 统 ! " << endl;
+        //cout <<  "                禄露 脫颅 陆酶脠毛 碌楼 麓脢 脧没 鲁媒 脫脦 脧路 脧碌 脥鲁 ! " << endl;
         cout <<  "               Welcome to word elemination system ! " << endl;
-        cout <<  "\n                                 1  regi-用户注册" << endl;
-        cout <<  "\n                                 2  plogin-玩家登陆" << endl;
-        cout <<  "\n                                 3  tlogin-出题者登陆" << endl;
-        cout <<  "\n                                 0  quit-退出系统" << endl;
+        cout <<  "\n                                 1  regi-脫脙禄搂脳垄虏谩" << endl;
+        cout <<  "\n                                 2  plogin-脥忙录脪碌脟脗陆" << endl;
+        cout <<  "\n                                 3  tlogin-鲁枚脤芒脮脽碌脟脗陆" << endl;
+        cout <<  "\n                                 0  quit-脥脣鲁枚脧碌脥鲁" << endl;
         cout <<  "              **************************************" << endl;
         do {
             cin >> choice;
             if (choice < 0 || choice > 8)
-                cout << "Input is wrong，please input again!" << endl;
+                cout << "Input is wrong拢卢please input again!" << endl;
             else
                 break;
         } while (1);
@@ -530,20 +610,20 @@ int main()
                 Game game;
                 while (playerChoice != 0) {
                     cout << "\n\n\n\n" << "      *************************" << endl;
-                    //cout <<  "                  欢 迎 进 入 游 戏 界 面 ! " << endl;
+                    //cout <<  "                  禄露 脫颅 陆酶 脠毛 脫脦 脧路 陆莽 脙忙 ! " << endl;
                     cout <<  "                Welcome to playing page ! " << endl;
-                    cout <<  "\n                 1  select the difficulty of the game-请选择难度游戏难度" << endl;
-                    cout <<  "\n                 2  start the game -开始游戏" << endl;
-                    cout <<  "\n                 3  next level -下一关" << endl;
+                    cout <<  "\n                 1  select the difficulty of the game-脟毛脩隆脭帽脛脩露脠脫脦脧路脛脩露脠" << endl;
+                    cout <<  "\n                 2  start the game -驴陋脢录脫脦脧路" << endl;
+                    cout <<  "\n                 3  next level -脧脗脪禄鹿脴" << endl;
                     //cout <<  "\n                 4  currentLevel" << endl;
-                    cout <<  "\n                 4  search user -查询" << endl;
-                    cout <<  "\n                 5  rank playerList -排行榜" << endl;
-                    cout <<  "\n                 0  quit playing page -退出游戏界面" << endl;
+                    cout <<  "\n                 4  search user -虏茅脩炉" << endl;
+                    cout <<  "\n                 5  rank playerList -脜脜脨脨掳帽" << endl;
+                    cout <<  "\n                 0  quit playing page -脥脣鲁枚脫脦脧路陆莽脙忙" << endl;
                     cout <<  "              ************************" << endl;
                     do {
                         cin >> playerChoice;
                         if (playerChoice < 0 || playerChoice > 5)
-                            cout << "Input is wrong，please input again!" << endl;
+                            cout << "Input is wrong拢卢please input again!" << endl;
                         else
                             break;
                     } while (1);
@@ -593,6 +673,7 @@ int main()
                     break;
                     }
                 }
+                tempPlayer.updateInfo();
                 tempPlayer.quitLogin();
             }
             else
@@ -628,17 +709,17 @@ int main()
                 int testerChoice = 1;
                 while (testerChoice != 0) {
                     cout << "\n\n\n\n" << "      *************************" << endl;
-                    //cout <<  "                  欢 迎 进 入 管 理 界 面 ! " << endl;
+                    //cout <<  "                  禄露 脫颅 陆酶 脠毛 鹿脺 脌铆 陆莽 脙忙 ! " << endl;
                     cout <<  "                Welcome to management page ! " << endl;
-                    cout <<  "\n                 1  build new tester case-出题" << endl;
-                    cout <<  "\n                 2  search user -查询" << endl;
-                    cout <<  "\n                 3  rank testBuilderList -排行榜" << endl;
-                    cout <<  "\n                 0  quit management page -退出管理界面" << endl;
+                    cout <<  "\n                 1  build new tester case-鲁枚脤芒" << endl;
+                    cout <<  "\n                 2  search user -虏茅脩炉" << endl;
+                    cout <<  "\n                 3  rank testBuilderList -脜脜脨脨掳帽" << endl;
+                    cout <<  "\n                 0  quit management page -脥脣鲁枚鹿脺脌铆陆莽脙忙" << endl;
                     cout <<  "              ************************" << endl;
                     do {
                         cin >> testerChoice;
                         if (testerChoice < 0 || testerChoice > 3)
-                            cout << "Input is wrong，please input again!" << endl;
+                            cout << "Input is wrong拢卢please input again!" << endl;
                         else
                             break;
                     } while (1);
@@ -670,6 +751,7 @@ int main()
                     break;
                     }
                 }
+                tempTester.updateInfo();
                 tempTester.quitLogin();
             }
             else
