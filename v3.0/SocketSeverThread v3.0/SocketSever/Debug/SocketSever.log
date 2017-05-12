@@ -1,4 +1,4 @@
-﻿生成启动时间为 2017/5/11 星期四 下午 17:47:34。
+﻿生成启动时间为 2017/5/12 星期五 下午 15:03:02。
      1>项目“D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketSeverThread v3.0\SocketSever\SocketSever.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt server.cpp
@@ -6,82 +6,84 @@
      1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
      1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(26): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(83): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(86): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(81): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(87): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(90): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(89): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(94): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(102): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(115): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(170): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(260): warning C4800: “int”: 将值强制为布尔值“true”或“false”(性能警告)
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(326): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(333): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(341): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(108): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(183): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(279): warning C4800: “int”: 将值强制为布尔值“true”或“false”(性能警告)
      1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(348): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(361): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(377): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(395): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(404): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(420): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(429): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(488): warning C4018: “<”: 有符号/无符号不匹配
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(505): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(355): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(511): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(363): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(524): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(370): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(537): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(383): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(553): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(399): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(571): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(417): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(580): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(435): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(596): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(444): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(604): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(460): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(748): warning C4146: 一元负运算符应用于无符号类型，结果仍为无符号类型
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(778): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(469): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(528): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(545): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(789): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(551): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(797): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(564): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(806): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(577): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(593): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(609): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(630): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(639): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(655): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(663): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _itoa. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdlib.h(937) : 参见“itoa”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(834): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(828): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(844): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(837): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(852): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(850): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(861): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(859): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(877): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(883): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(867): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(902): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(892): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(961): warning C4018: “<”: 有符号/无符号不匹配
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(974): warning C4018: “<”: 有符号/无符号不匹配
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(988): warning C4018: “<”: 有符号/无符号不匹配
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(1168): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(905): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(914): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(957): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(1050): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(1069): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(1080): warning C4018: “<”: 有符号/无符号不匹配
+     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(1296): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
                  c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(1868) : 参见“inet_ntoa”的声明
-     1>d:\c++ short-term_period-2\ks\wordelemination game\v3.0\socketseverthread v3.0\socketsever\server.cpp(224): warning C4715: “Battle::onBattle”: 不是所有的控件路径都返回值
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketSeverThread v3.0\Debug\SocketSever.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketSeverThread v3.0\Debug\SocketSever.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\c++ short-term_period-2\ks\WordElemination Game\v3.0\SocketSeverThread v3.0\Debug\SocketSever.lib" /MACHINE:X86 /SAFESEH Debug\server.obj
          Debug\Socket.obj
@@ -90,4 +92,4 @@
 
 生成成功。
 
-已用时间 00:00:04.24
+已用时间 00:00:03.26

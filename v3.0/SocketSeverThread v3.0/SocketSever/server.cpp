@@ -1,6 +1,6 @@
 // 开发环境: Visual Studio 2013
 // 程序说明: WordElemination Game服务器端/基于TCP,socket多线程通信
-// 2017/5
+// 2017年5月
 //----------------------------------------------------------
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -16,9 +16,9 @@
 #include "stdafx.h"
 using namespace std;
 /**
- * [sendToClient description]
- * @param sockClient [description]
- * @param s          [description]
+ * [sendToClient description]:向客户端发送数据
+ * @param sockClient [description]：客户端
+ * @param s          [description]：消息
  */
 void sendToClient(SOCKET sockClient, const char s[MaxSize])
 {
@@ -28,7 +28,9 @@ void sendToClient(SOCKET sockClient, const char s[MaxSize])
     if (byte <= 0)
         cout << "send error\n";
 }
-
+/**
+ * 分割数组
+ */
 vector<string> split(const  string& s, const string& delim)
 {
     vector<std::string> elems;
@@ -61,9 +63,10 @@ public:
     Game(int l = 0) {level = l;}
     ~Game() {}
     static vector<vector<string>>& getWordList() { return wordList; }
-    int Display(SOCKET sockClient);
-    //int Battle(SOCKET sockClientA, SOCKET sockClientB);
     static void InitFromFile(SOCKET sockClient);
+    int Display(SOCKET sockClient);
+    int getLevel() {return level;}
+    void setLevel(int a) {level = a;}
 };
 /**
  * Game.cpp
@@ -71,24 +74,26 @@ public:
 vector<vector<string>> Game::wordList = {};
 int Game::Display(SOCKET sockClient)
 {
-    char sendBuf[MaxSize];
     char revBuf[MaxSize];
-    // strcpy(sendBuf, "The level is: ");
-    // byte=send(sockClient,sendBuf,strlen(sendBuf),0);
-    // char l[MaxSize];
-    // itoa(level+1,l,10);
-    // //  << "There are " << wordList.size() << " levels totally" << endl;
-    // byte=send(sockClient,l,strlen(l),0);
+    sendToClient(sockClient, "The level is: ");
+    Sleep(10);
+    char l[MaxSize];
+    itoa(level + 1, l, 10);
+    sendToClient(sockClient, l);
+    Sleep(10);
+    sendToClient(sockClient, "\n");
+    Sleep(10);
     if ((unsigned int)level < wordList.size() && wordList[level].size() > 0) {
         srand(time(NULL));
         int pos = rand() % wordList[level].size();
         char w[MaxSize];
         strcpy(w, (wordList[level][pos]).c_str());
         send(sockClient, w, strlen(w), 0);
-        Sleep(100);
+        Sleep(1000);
+        char sendBuf[MaxSize];
         strcpy(sendBuf, "\r 				 \r");
         send(sockClient, sendBuf, strlen(sendBuf), 0);
-        time_t timeBegin, timeEnd;
+        time_t timeBegin;
         timeBegin = time(NULL);
         string answer;
         int n = recv(sockClient, revBuf, MaxSize, 0);
@@ -97,10 +102,16 @@ int Game::Display(SOCKET sockClient)
             cout << "Rec Error" << endl;
         answer = revBuf;
         if (wordList[level][pos] == answer) {
+            time_t timeEnd;
             timeEnd = time(NULL);
-            // cout << timeEnd - timeBegin << endl;
-            strcpy(sendBuf, "Your answer is right.   \n");
-            send(sockClient, sendBuf, strlen(sendBuf), 0);
+            char l[MaxSize];
+            itoa((int)(timeEnd - timeBegin), l, 10);
+            sendToClient(sockClient, l);
+            Sleep(10);
+            sendToClient(sockClient, "\n");
+            Sleep(10);
+            sendToClient(sockClient, "Your answer is right.   \n");
+            Sleep(10);
             level++;
             int point;
             if (level > 7 && (timeEnd - timeBegin) < 10)
@@ -112,14 +123,14 @@ int Game::Display(SOCKET sockClient)
             return point;
         }
         else {
-            strcpy(sendBuf, "Your answer is wrong.\n");
-            send(sockClient, sendBuf, strlen(sendBuf), 0);
-            return false;
+            sendToClient(sockClient, "Your answer is wrong.\n");
+            Sleep(10);
+            return 0;
         }
     }
     else {
         sendToClient(sockClient, "Congratulations! You have reached the last level.\n");
-        return false;
+        return 0;
     }
 }
 
@@ -157,10 +168,12 @@ public:
     string word;
     time_t t1;
     time_t t2;
+    time_t timeBegin;
     SOCKET sockClientA;
     SOCKET sockClientB;
-    Battle() {t1 = 100000; t2 = 100000;}
+    Battle() {t1 = 1000000; t2 = 1000000;}
     ~Battle() {}
+    void resetTime() {t1 = 1000000; t2 = 1000000;}
     void givePro();
     int onBattle(SOCKET sockClient);
 };
@@ -185,8 +198,6 @@ void Battle::givePro()
 int Battle::onBattle(SOCKET sockClient)
 {
     char revBuf[MaxSize];
-    time_t timeBegin, timeEnd;
-    timeBegin = time(NULL);
     string answer;
     int n = recv(sockClient, revBuf, MaxSize, 0);
     revBuf[n] = '\0';
@@ -195,6 +206,7 @@ int Battle::onBattle(SOCKET sockClient)
     answer = revBuf;
 
     if (word == answer) {
+        time_t timeEnd;
         timeEnd = time(NULL);
         if (sockClientA == sockClient)
             t1 = timeEnd - timeBegin ;
@@ -202,11 +214,15 @@ int Battle::onBattle(SOCKET sockClient)
             t2 = timeEnd - timeBegin ;
 
         if (t1 > t2) {
+            cout << "t1: " << t1 << endl;
+            cout << "t2: " << t2 << endl;
             sendToClient(sockClientA, "You lose the battle!   \n");
             sendToClient(sockClientB, "You win the battle!   \n");
             return 2;
         }
         else if (t1 < t2) {
+            cout << "t1: " << t1 << endl;
+            cout << "t2: " << t2 << endl;
             sendToClient(sockClientA, "You win the battle!   \n");
             sendToClient(sockClientB, "You lose the battle!   \n");
             return 1;
@@ -217,10 +233,13 @@ int Battle::onBattle(SOCKET sockClient)
             return 0;
         }
     }
-    else {
+    else{
         sendToClient(sockClient, "Your answer is wrong.\n");
+        if (sockClientA == sockClient)
+            return 2;
+        else
+            return 1;
     }
-
 }
 
 Battle battle;
@@ -245,9 +264,9 @@ public:
  */
 class Player: public User {
 private:
-    int playerLevel;
-    int experience;
-    int gainedGrades;
+    int playerLevel;//等级
+    int experience;//经验值
+    int gainedGrades;//最好成绩
     bool isLogin;
     static vector<Player> playerList;//registered player list
     SOCKET relatedSocket;
@@ -268,13 +287,14 @@ public:
     int Login(SOCKET sockClient);
     int getGrades() {return gainedGrades;}
     int getExperience() {return experience;}
+    int getPlayerLevel() {return playerLevel;}
     SOCKET& getRelatedSocket() {return relatedSocket;}
     void quitLogin() {isLogin = false;}
     void addLevel() {playerLevel += experience / 5;}
     void addExperience(int exp) {experience += exp;}
-    void addGainedGrades() {gainedGrades++;}
-    void addGainedPoints(int a) {gainedGrades += a;}
+    void setGainedGrades(int n) {gainedGrades = (n > gainedGrades) ? n : gainedGrades;}
     void SearchPlayer(SOCKET sockClient, string& name);
+    void SearchPlayerBylevel(SOCKET sockClient, int level);
     void SearchTestBuilder(SOCKET sockClient, string& name);
     void RankPlayersByGrades(SOCKET sockClient);
     void RankPlayersByExperience(SOCKET sockClient);
@@ -305,9 +325,11 @@ public:
     int Login(SOCKET sockClient);
     void quitLogin() {isLogin = false;}
     void addProblemsNumbers() {problemsNumbers++;}
-    void addTestBuilderLevel() {testBuilderLevel++;}
+    void addTestBuilderLevel() {testBuilderLevel+=problemsNumbers/5;}
+    int getTestBuilderLevel() {return testBuilderLevel;}
     void SearchTestBuilder(SOCKET sockClient, const string& name);
     void SearchPlayer(SOCKET sockClient, const string& name);
+    void SearchTestBuilderBylevel(SOCKET sockClient, int level);
     int getProNum() {return problemsNumbers;}
     void RankPlayersByProNum(SOCKET sockClient);
     int getTesterLevel() {return testBuilderLevel;}
@@ -327,7 +349,7 @@ void Player::Register(SOCKET sockClient)
         send(sockClient, sendBuf, strlen(sendBuf), 0);
         abort();
     }
-    outfile << this->getName() << "," << this->getPassword() << "," << this->playerLevel << "," << this->experience << "," << this->gainedGrades << endl;
+    outfile << this->getName() << "," << this->getPassword() << "," << this->playerLevel << "," << this->experience << "," << this->gainedGrades << "      " << endl;
     outfile.close();
     playerList.push_back(*this);
     strcpy(sendBuf, "Player successfully registers!\n");
@@ -339,7 +361,7 @@ int Player::Login(SOCKET sockClient)
     for (int i = 0; i < (int)playerList.size(); i++)
         if (playerList[i].getName() == this->getName() && playerList[i].getPassword() == this->getPassword()) {
             strcpy(sendBuf, "Player successfully logins!\n");
-            Sleep(10);
+            Sleep(20);
             send(sockClient, sendBuf, strlen(sendBuf), 0);
             playerList[i].isLogin = true;
             playerList[i].relatedSocket = sockClient;
@@ -365,6 +387,24 @@ void Player::SearchPlayer(SOCKET sockClient, string& name)
             return;
         }
     sendToClient(sockClient, "It is not exited in the playerList.\n");
+}
+void Player::SearchPlayerBylevel(SOCKET sockClient, int level)
+{
+    vector<Player> v = Player::getList();
+    for (unsigned int i = 0; i < v.size(); i++)
+        if (v[i].getPlayerLevel() >= level) {
+            sendToClient(sockClient, "The ");
+            Sleep(10);
+            char l[MaxSize];
+            itoa(i + 1, l, 10);
+            sendToClient(sockClient, l);
+            Sleep(10);
+            sendToClient(sockClient, "th player: ");
+            Sleep(10);
+            sendToClient(sockClient, v[i].getName().c_str());
+            Sleep(10);
+            sendToClient(sockClient, "\n");
+        }
 }
 void Player::SearchTestBuilder(SOCKET sockClient, string& name)
 {
@@ -466,18 +506,18 @@ void Player::updateInfo(SOCKET sockClient)
     outfile.seekp(0);
     getline(outfile, line);
     streamoff cur_tmp = outfile.tellg();
-    //int loc = -getList().size();
     while (!outfile.eof())
     {
         getline(outfile, line);
         v = split(line, ",");
         if (strcmp(this->getName().c_str(), v[0].c_str()) == 0) {
             outfile.seekp(cur_tmp);
-            outfile.seekp(0, ios::cur );
+            //outfile.seekp( 0, ios::cur );
             outfile << this->getName() << "," << this->getPassword() << "," << this->playerLevel << "," << this->experience << "," << this->gainedGrades;
+            outfile.seekp(cur_tmp);
+            getline(outfile, line);
             break;
         }
-        //loc++;
         cur_tmp = outfile.tellg();
     }
     outfile.close();
@@ -500,7 +540,7 @@ void TestBuilder::Register(SOCKET sockClient)
 {
     char sendBuf[MaxSize];
     ofstream outfile("testerList.csv", ios::out | ios::app);
-    outfile << this->getName() << "," << this->getPassword() << "," << this->problemsNumbers << "," << this->testBuilderLevel << endl;
+    outfile << this->getName() << "," << this->getPassword() << "," << this->problemsNumbers << "," << this->testBuilderLevel << "     " << endl;
     if (!outfile) {
         strcpy(sendBuf, "File playerList.csv open failed!");
         send(sockClient, sendBuf, strlen(sendBuf), 0);
@@ -540,7 +580,7 @@ void TestBuilder::SearchTestBuilder(SOCKET sockClient, const string& name)
             sendToClient(sockClient, "th tester\n");
             return;
         }
-    cout << "It is not exited in the testBuilderList.\n" << endl;
+    sendToClient(sockClient, "It is not exited in the testBuilderList.\n");
 }
 void TestBuilder::SearchPlayer(SOCKET sockClient, const string& name)
 {
@@ -556,8 +596,27 @@ void TestBuilder::SearchPlayer(SOCKET sockClient, const string& name)
             sendToClient(sockClient, "th player\n");
             return;
         }
-    cout << "It is not exited in the playerList." << endl;
+    sendToClient(sockClient, "It is not exited in the playerList.\n");
 }
+void TestBuilder::SearchTestBuilderBylevel(SOCKET sockClient, int level)
+{
+    vector<TestBuilder> v = TestBuilder::getTestBuilderList();
+    for (unsigned int i = 0; i < v.size(); i++)
+        if (v[i].getTestBuilderLevel() >= level) {
+            sendToClient(sockClient, "The ");
+            Sleep(10);
+            char l[MaxSize];
+            itoa(i + 1, l, 10);
+            sendToClient(sockClient, l);
+            Sleep(10);
+            sendToClient(sockClient, "th tester: ");
+            Sleep(10);
+            sendToClient(sockClient, v[i].getName().c_str());
+            Sleep(10);
+            sendToClient(sockClient, "\n");
+        }
+}
+
 bool sortByProNum(TestBuilder a, TestBuilder b)
 {
     return a.getProNum() > b.getProNum();
@@ -745,25 +804,22 @@ void TestBuilder::updateInfo(SOCKET sockClient)
     outfile.seekp(0);
     getline(outfile, line);
     streamoff cur_tmp = outfile.tellg();
-    int loc = -getTestBuilderList().size();
     while (!outfile.eof())
     {
         getline(outfile, line);
         v = split(line, ",");
         if (strcmp(this->getName().c_str(), v[0].c_str()) == 0) {
             outfile.seekp(cur_tmp);
-            outfile.seekp(loc, ios::cur );
+            //outfile.seekp(loc, ios::cur );
             outfile << this->getName() << "," << this->getPassword() << "," << this->problemsNumbers << "," << this->testBuilderLevel;
             break;
         }
-        loc++;
         cur_tmp = outfile.tellg();
     }
     outfile.close();
 }
 
-
-//HANDLE hMutex;
+HANDLE hMutex;
 void SendAndRec(SOCKET sockClient)
 {
     int choice = 1;
@@ -773,11 +829,10 @@ void SendAndRec(SOCKET sockClient)
     int byte = 0;
     while (1)
     {
-        //WaitForSingleObject(hMutex, INFINITE);
+        WaitForSingleObject(hMutex, INFINITE);
         while (choice != 0) {
             strcpy(sendBuf, "             Welcome to word elemination system !\n                        1  register\n                        2  plogin\n                        3  tlogin\n                        0  quit\n");
             byte = send(sockClient, sendBuf, strlen(sendBuf), 0);
-            //for (auto& c : sendBuf) { c = (char)NULL; }
             if (byte <= 0)
                 cout << "Send error" << endl;
             do {
@@ -906,37 +961,68 @@ void SendAndRec(SOCKET sockClient)
                                 break;
                         } while (1);
                         switch (playerChoice) {
-                        case 1:
-
-                            break;
+                        case 1: {
+                            int l = 0;
+                            sendToClient(sockClient, "Please choose the difficulty (0-10):");
+                            int n = recv(sockClient, revBuf, MaxSize, 0);
+                            if (n < 0)
+                                cout << "Recv error" << endl;
+                            l = revBuf[0] - '0';
+                            game.setLevel(l);
+                        }
+                        break;
                         case 2: {
                             int b = game.Display(sockClient);
                             if (b > 0) {
-                                tempPlayer.addGainedGrades();
-                                tempPlayer.addLevel();
+                                tempPlayer.setGainedGrades(game.getLevel());
                                 tempPlayer.addExperience(b);
+                                tempPlayer.addLevel();
                             }
                         }
                         break;
                         case 3: {
                             int b = game.Display(sockClient);
                             if (b > 0) {
-                                tempPlayer.addGainedGrades();
-                                tempPlayer.addLevel();
+                                tempPlayer.setGainedGrades(game.getLevel());
                                 tempPlayer.addExperience(b);
+                                tempPlayer.addLevel();
                             }
                         }
                         break;
+                        /**
+                         * 查询用户
+                         */
                         case 4: {
                             sendToClient(sockClient, "Please choose the way to search user:\n");
-                            string name;
+                            Sleep(10);
+                            sendToClient(sockClient, "              a username  \n              b userLevel    \n");
+                            char rankChoice;
                             int n = recv(sockClient, revBuf, MaxSize, 0);
-                            revBuf[n] = '\0';
                             if (n < 0)
-                                cout << "Rec Error" << endl;
-                            name = revBuf;
-                            tempPlayer.SearchPlayer(sockClient, name);
-                            tempPlayer.SearchTestBuilder(sockClient, name);
+                                cout << "error" << endl;
+                            rankChoice = revBuf[0];
+                            if (rankChoice == 'a') {
+                                sendToClient(sockClient, "Please input the username:");
+                                string name;
+                                n = recv(sockClient, revBuf, MaxSize, 0);
+                                if (n < 0)
+                                    cout << "Rec Error" << endl;
+                                revBuf[n] = '\0';
+                                name = revBuf;
+                                tempPlayer.SearchPlayer(sockClient, name);
+                                tempPlayer.SearchTestBuilder(sockClient, name);
+                            }
+                            else {
+                                sendToClient(sockClient, "Please input the Player's level:");
+                                int level;
+                                n = recv(sockClient, revBuf, MaxSize, 0);
+                                if (n < 0)
+                                    cout << "Rec Error" << endl;
+                                revBuf[n] = '\0';
+                                level = atoi(revBuf);
+                                tempPlayer.SearchPlayerBylevel(sockClient, level);
+                            }
+
                         }
                         break;
                         case 5: {
@@ -953,6 +1039,9 @@ void SendAndRec(SOCKET sockClient)
                                 tempPlayer.RankPlayersByExperience(sockClient);
                         }
                         break;
+                        /**
+                         * 查询当前时间所有在线用户并选择是否进入对战界面
+                         */
                         case 6: {
                             vector<Player> onList;
                             onList = tempPlayer.getOnlineList();
@@ -964,67 +1053,78 @@ void SendAndRec(SOCKET sockClient)
                                 sendToClient(sockClient, "\n");
                                 Sleep(10);
                             }
-                            sendToClient(sockClient, "If you want to battle with someone online,please input its username:\n");
-                            int n = recv(sockClient, revBuf, MaxSize, 0);
+                            sendToClient(sockClient, "If you want to battle with someone online,please input 'y';If don't,input 'n':\n");
+                            n = recv(sockClient, revBuf, MaxSize, 0);
                             revBuf[n] = '\0';
                             if (n < 0)
                                 cout << "Rec Error" << endl;
-                            string username = revBuf;
-                            int i = 0;
-                            for (; i < onList.size(); i++) {
-                                if (username == onList[i].getName())
-                                    break;
-                            }
-                            battle.sockClientA = sockClient;
-                            battle.sockClientB = onList[i].getRelatedSocket();
-                            sendToClient(onList[i].getRelatedSocket(), tempPlayer.getName().c_str());
-                            Sleep(10);
-                            sendToClient(onList[i].getRelatedSocket(), " want to battle with you,do you agree('y'or'n'):\n");
-                            // n = recv(sockClient, revBuf, MaxSize, 0);
-                            // revBuf[n] = '\0';
-                            // if (n < 0)
-                            //     cout << "Rec Error" << endl;
-                            Sleep(5000);
-                            for (int k = 0; k < Player::getList().size(); k++) {
-                                if (Player::getList()[k].getName() == onList[i].getName())
-                                    onList[i].isAccept = Player::getList()[k].isAccept;
-                            }
-                            if (onList[i].isAccept) {
-                                onList[i].isAccept = false;
-                                sendToClient(onList[i].getRelatedSocket(), "The battle will start after 3 seconds!\n");
-                                sendToClient(sockClient, "The oponent has agreed,the battle will start after 3 seconds!\n");
-                                Sleep(3000);
-                                battle.givePro();
-                                int a = battle.onBattle(sockClient);
-                                if (a == 1)
-                                    tempPlayer.addGainedPoints(10);
-                                else if (a == 2)
-                                    tempPlayer.addGainedPoints(-1);
-                                else
-                                    tempPlayer.addGainedPoints(0);
-
-                                //getchar();
-                            }
-                            else {
-                                sendToClient(sockClient, "The oponent refused your request!\n");
+                            if (revBuf[0] == 'y') {
+                                sendToClient(sockClient, "Please input its username:\n");
+                                int n = recv(sockClient, revBuf, MaxSize, 0);
+                                revBuf[n] = '\0';
+                                if (n < 0)
+                                    cout << "Rec Error" << endl;
+                                string username = revBuf;
+                                int i = 0;
+                                for (; i < onList.size(); i++) {
+                                    if (username == onList[i].getName())
+                                        break;
+                                }
+                                battle.sockClientA = sockClient;
+                                battle.sockClientB = onList[i].getRelatedSocket();
+                                sendToClient(onList[i].getRelatedSocket(), tempPlayer.getName().c_str());
+                                Sleep(10);
+                                sendToClient(onList[i].getRelatedSocket(), " want to battle with you,do you agree(Make a reply in 8 seconds,'7'or'8'):\n");
+                                Sleep(8000);
+                                int k = 0;
+                                for (; k < Player::getList().size(); k++) {
+                                    if (Player::getList()[k].getName() == onList[i].getName()) {
+                                        onList[i].isAccept = Player::getList()[k].isAccept;
+                                        break;
+                                    }
+                                }
+                                if (onList[i].isAccept) {
+                                    Player& oponent = (Player&)Player::getList()[k];
+                                    oponent.isAccept = false;
+                                    battle.resetTime();
+                                    sendToClient(onList[i].getRelatedSocket(), "The battle will start after 3 seconds!\n");
+                                    sendToClient(sockClient, "The oponent has agreed,the battle will start after 3 seconds!\n");
+                                    Sleep(3000);
+                                    battle.givePro();
+                                    battle.timeBegin = time(NULL);
+                                    int a = battle.onBattle(sockClient);
+                                    if (a == 1)
+                                        tempPlayer.addExperience(10);
+                                    else if (a == 2)
+                                        tempPlayer.addExperience(-2);
+                                    else
+                                        tempPlayer.addExperience(0);
+                                    tempPlayer.addLevel();
+                                }
+                                else {
+                                    sendToClient(sockClient, "The oponent refused your request!\n");
+                                }
                             }
                         }
                         break;
+                        /**
+                         * 被挑战者应战界面
+                         */
                         case 7: {
                             tempPlayer.isAccept = true;
+                            Sleep(3000);
                             int a = battle.onBattle(sockClient);
                             if (a == 2)
-                                tempPlayer.addGainedPoints(10);
+                                tempPlayer.addExperience(10);
                             else if (a == 1)
-                                tempPlayer.addGainedPoints(-1);
+                                tempPlayer.addExperience(-1);
                             else
-                                tempPlayer.addGainedPoints(0);
-                            //getchar();
+                                tempPlayer.addExperience(0);
+                            tempPlayer.addLevel();
                         }
                         break;
                         }
                     }
-                    //battle.~Battle();
                     tempPlayer.updateInfo(sockClient);
                     tempPlayer.quitLogin();
                 }
@@ -1098,26 +1198,54 @@ void SendAndRec(SOCKET sockClient)
                                 break;
                         } while (1);
                         switch (testerChoice) {
+                        /**
+                         * 新增单词
+                         */
                         case 1:
                             tempTester.AddWord(sockClient);
                             tempTester.addProblemsNumbers();
                             break;
+                        /**
+                         * 查询
+                         */
                         case 2: {
-                            sendToClient(sockClient, "Please input the name to search user:");
-                            string name;
+                            sendToClient(sockClient, "Please choose the way to search user:\n");
+                            Sleep(10);
+                            sendToClient(sockClient, "              a username  \n              b userLevel    \n");
+                            char rankChoice;
                             int n = recv(sockClient, revBuf, MaxSize, 0);
-                            revBuf[n] = '\0';
                             if (n < 0)
-                                cout << "Rec Error" << endl;
-                            name = revBuf;
-                            tempTester.SearchPlayer(sockClient, name);
-                            tempTester.SearchTestBuilder(sockClient, name);
+                                cout << "error" << endl;
+                            rankChoice = revBuf[0];
+                            if (rankChoice == 'a') {
+                                sendToClient(sockClient, "Please input the username:");
+                                string name;
+                                n = recv(sockClient, revBuf, MaxSize, 0);
+                                if (n < 0)
+                                    cout << "Rec Error" << endl;
+                                revBuf[n] = '\0';
+                                name = revBuf;
+                                tempTester.SearchPlayer(sockClient, name);
+                                tempTester.SearchTestBuilder(sockClient, name);
+                            }
+                            else {
+                                sendToClient(sockClient, "Please input the tester's level:");
+                                int level;
+                                n = recv(sockClient, revBuf, MaxSize, 0);
+                                if (n < 0)
+                                    cout << "Rec Error" << endl;
+                                revBuf[n] = '\0';
+                                level = atoi(revBuf);
+                                tempTester.SearchTestBuilderBylevel(sockClient, level);
+                            }
                         }
-
                         break;
+                        /**
+                         * 排行榜
+                         */
                         case 3: {
                             sendToClient(sockClient, "\n      Please choose the characters to rank the Tester list:\n");
-                            sendToClient(sockClient, "\n             a problemsNumbers  \n              b testBuilderLevel    \n");
+                            sendToClient(sockClient, "             a problemsNumbers  \n             b testBuilderLevel    \n");
                             char rankChoice;
                             int n = recv(sockClient, revBuf, MaxSize, 0);
                             revBuf[n] = '\0';
@@ -1195,8 +1323,8 @@ int main()
 
         if (hThread != NULL)
             CloseHandle(hThread);
+        Sleep(100);
 
-        Sleep(200);
     }
 
     getchar();

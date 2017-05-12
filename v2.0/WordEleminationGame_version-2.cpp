@@ -36,13 +36,15 @@ vector<string> split(const  string& s, const string& delim)
 class Game {
 private:
     int level;
-    static vector<vector<string>> wordList;//±»Ìí¼ÓµÄµ¥´ÊÁÐ±í
+    static vector<vector<string>> wordList;//单词列表
 public:
     Game(int l = 0) {level = l;}
     ~Game() {}
     static vector<vector<string>>& getWordList() { return wordList; }
-    int Display();
     static void InitFromFile();
+    int Display();
+    int getLevel() {return level;}
+    void setLevel(int a) {level = a;}
 };
 /**
  * Game.cpp
@@ -58,20 +60,21 @@ int Game::Display()
         cout << wordList[level][pos];
         Sleep(2000);
         cout << "\r                   \r";
-        time_t timeBegin, timeEnd;
+        time_t timeBegin;
         timeBegin = time(NULL);
         string answer;
         cin >> answer;
         if (wordList[level][pos] == answer) {
+            time_t timeEnd;
             timeEnd = time(NULL);
             cout << "Your answer is right. "
                  << "Time used: "
                  << timeEnd - timeBegin << endl;
             level++;
             int point;
-            if(level > 7&&(timeEnd - timeBegin)<10)
+            if (level > 7 && (timeEnd - timeBegin) < 10)
                 point = 3;
-            else if(level > 4&&(timeEnd - timeBegin)<4)
+            else if (level > 4 && (timeEnd - timeBegin) < 4)
                 point = 2;
             else
                 point = 1;
@@ -132,9 +135,9 @@ public:
  */
 class Player: public User {
 private:
-    int playerLevel;
-    int experience;
-    int gainedGrades;
+    int playerLevel;//等级
+    int experience;//经验值
+    int gainedGrades;//最好成绩
     static bool isLogin;
     static vector<Player> playerList;//registered player list
 public:
@@ -150,11 +153,13 @@ public:
     int Login();
     int getGrades() {return gainedGrades;}
     int getExperience() {return experience;}
+    int getPlayerLvel() {return playerLevel;}
     void quitLogin() {isLogin = false;}
-    void addLevel() {playerLevel+=experience/5;}
-    void addExperience(int exp) {experience+=exp;}
-    void addGainedGrades() {gainedGrades++;}
+    void addLevel() {playerLevel += experience / 5;} //经验值每增长5，等级加1
+    void addExperience(int exp) {experience += exp;}
+    void updateGainedGrades(int l) {gainedGrades = (gainedGrades < l) ? l : gainedGrades;}
     void SearchPlayer(string& name);
+    void SearchPlayerBylevel(int level);
     void SearchTestBuilder(string& name);
     void RankPlayersByGrades();
     void RankPlayersByExperience();
@@ -185,6 +190,7 @@ public:
     void addTestBuilderLevel() {testBuilderLevel++;}
     void SearchTestBuilder(const string& name);
     void SearchPlayer(const string& name);
+    void SearchTesterBylevel(int level);
     int getProNum() {return problemsNumbers;}
     void RankPlayersByProNum();
     int getTesterLevel() {return testBuilderLevel;}
@@ -205,7 +211,7 @@ void Player::Register()
         cout << "File playerList.csv open failed!" << endl;
         abort();
     }
-    outfile << this->getName() << "," << this->getPassword() << "," << this->playerLevel << "," << this->experience << "," << this->gainedGrades << endl;
+    outfile << this->getName() << "," << this->getPassword() << "," << this->playerLevel << "," << this->experience << "," << this->gainedGrades << "    " << endl;
     outfile.close();
     playerList.push_back(*this);
     cout << "Player successfully registers!" << endl;
@@ -242,6 +248,14 @@ void Player::SearchTestBuilder(string& name)
             return;
         }
     cout << "It is not exited in the testBuilderList." << endl;
+}
+void Player::SearchPlayerBylevel(int level)
+{
+    vector<Player> v = Player::getList();
+    for (unsigned int i = 0; i < v.size(); i++)
+        if (v[i].getPlayerLvel() >= level) {
+            cout << "The " << i + 1 << "th player: " << v[i].getName() << endl;
+        }
 }
 bool sortByGrades(Player a, Player b)
 {
@@ -280,7 +294,7 @@ void Player::InitFromFile()
     while (!infile.eof())
     {
         getline(infile, line);
-        if(line=="")
+        if (line == "")
             break;
         v = split(line, ",");
         Player player(v[0], v[1], atoi(v[2].c_str()), atoi(v[3].c_str()), atoi(v[3].c_str()));
@@ -328,7 +342,7 @@ void TestBuilder::Register()
         cout << "File testerList.csv open failed!" << endl;
         abort();
     }
-    outfile << this->getName() << "," << this->getPassword() << "," << this->problemsNumbers << "," << this->testBuilderLevel << endl;
+    outfile << this->getName() << "," << this->getPassword() << "," << this->problemsNumbers << "," << this->testBuilderLevel << "  " << endl;
     outfile.close();
     testBuilderList.push_back(*this);
     cout << "Tester successfully registers!" << endl;
@@ -365,6 +379,14 @@ void TestBuilder::SearchPlayer(const string& name)
             return;
         }
     cout << "It is not exited in the playerList." << endl;
+}
+void TestBuilder::SearchTesterBylevel(int level)
+{
+    vector<TestBuilder> v = TestBuilder::getTestBuilderList();
+    for (unsigned int i = 0; i < v.size(); i++)
+        if (v[i].getTesterLevel() >= level) {
+            cout << "The " << i + 1 << "th tester: " << v[i].getName() << endl;
+        }
 }
 bool sortByProNum(TestBuilder a, TestBuilder b)
 {
@@ -549,12 +571,11 @@ int main()
     TestBuilder::InitFromFile();
     while (choice != 0) {
         cout << "\n\n\n\n" << "              *************************" << endl;
-        //cout <<  "                »¶ Ó­ ½øÈë µ¥ ´Ê Ïû ³ý ÓÎ Ï· Ïµ Í³ ! " << endl;
         cout <<  "               Welcome to word elemination system ! " << endl;
-        cout <<  "\n                                 1  regi-ÓÃ»§×¢²á" << endl;
-        cout <<  "\n                                 2  plogin-Íæ¼ÒµÇÂ½" << endl;
-        cout <<  "\n                                 3  tlogin-³öÌâÕßµÇÂ½" << endl;
-        cout <<  "\n                                 0  quit-ÍË³öÏµÍ³" << endl;
+        cout <<  "\n                                 1  register" << endl;//用户注册
+        cout <<  "\n                                 2  player-login" << endl;//玩家登陆
+        cout <<  "\n                                 3  tester-login" << endl;//出题者登陆
+        cout <<  "\n                                 0  quit" << endl;//退出系统
         cout <<  "              **************************************" << endl;
         do {
             cin >> choice;
@@ -610,15 +631,13 @@ int main()
                 Game game;
                 while (playerChoice != 0) {
                     cout << "\n\n\n\n" << "      *************************" << endl;
-                    //cout <<  "                  »¶ Ó­ ½ø Èë ÓÎ Ï· ½ç Ãæ ! " << endl;
                     cout <<  "                Welcome to playing page ! " << endl;
-                    cout <<  "\n                 1  select the difficulty of the game-ÇëÑ¡ÔñÄÑ¶ÈÓÎÏ·ÄÑ¶È" << endl;
-                    cout <<  "\n                 2  start the game -¿ªÊ¼ÓÎÏ·" << endl;
-                    cout <<  "\n                 3  next level -ÏÂÒ»¹Ø" << endl;
-                    //cout <<  "\n                 4  currentLevel" << endl;
-                    cout <<  "\n                 4  search user -²éÑ¯" << endl;
-                    cout <<  "\n                 5  rank playerList -ÅÅÐÐ°ñ" << endl;
-                    cout <<  "\n                 0  quit playing page -ÍË³öÓÎÏ·½çÃæ" << endl;
+                    cout <<  "\n                 1  select the difficulty of the game" << endl;//选择游戏难度
+                    cout <<  "\n                 2  start the game " << endl;//开始游戏
+                    cout <<  "\n                 3  next level " << endl;//继续游戏
+                    cout <<  "\n                 4  search user " << endl;//查找用户
+                    cout <<  "\n                 5  rank playerList " << endl;//排行榜
+                    cout <<  "\n                 0  quit playing page " << endl;//退出游戏界面
                     cout <<  "              ************************" << endl;
                     do {
                         cin >> playerChoice;
@@ -628,35 +647,50 @@ int main()
                             break;
                     } while (1);
                     switch (playerChoice) {
-                    case 1:
-
-                        break;
-                    case 2:{
-                        int b=game.Display();
-                        if (b>0) {
-                            tempPlayer.addGainedGrades();
-                            tempPlayer.addLevel();
+                    case 1: {
+                        int l = 0;
+                        cout << "Please choose the difficulty (0-10):" << endl;
+                        cin >> l;
+                        game.setLevel(l);
+                    }
+                    break;
+                    case 2: {
+                        int b = game.Display();
+                        if (b > 0) {
+                            tempPlayer.updateGainedGrades(game.getLevel());
                             tempPlayer.addExperience(b);
+                            tempPlayer.addLevel();
                         }
                     }
 
-                        break;
-                    case 3:{
-                        int b=game.Display();
-                        if (b>0) {
-                            tempPlayer.addGainedGrades();
-                            tempPlayer.addLevel();
+                    break;
+                    case 3: {
+                        int b = game.Display();
+                        if (b > 0) {
+                            tempPlayer.updateGainedGrades(game.getLevel());
                             tempPlayer.addExperience(b);
+                            tempPlayer.addLevel();
                         }
                     }
-
-                        break;
+                    break;
                     case 4: {
                         cout << "Please choose the way to search user:" << endl;
-                        string name;
-                        cin >> name;
-                        tempPlayer.SearchPlayer(name);
-                        tempPlayer.SearchTestBuilder(name);
+                        cout << "              a username  \n              b userLevel    \n" << endl;
+                        char rankChoice;
+                        cin >> rankChoice;
+                        if (rankChoice == 'a') {
+                            cout << "Please input the username:" << endl;
+                            string name;
+                            cin >> name;
+                            tempPlayer.SearchPlayer(name);
+                            tempPlayer.SearchTestBuilder(name);
+                        }
+                        else {
+                            cout << "Please input the Player's level:" << endl;
+                            int level;
+                            cin >> level;
+                            tempPlayer.SearchPlayerBylevel(level);
+                        }
                     }
                     break;
                     case 5: {
@@ -709,12 +743,11 @@ int main()
                 int testerChoice = 1;
                 while (testerChoice != 0) {
                     cout << "\n\n\n\n" << "      *************************" << endl;
-                    //cout <<  "                  »¶ Ó­ ½ø Èë ¹Ü Àí ½ç Ãæ ! " << endl;
                     cout <<  "                Welcome to management page ! " << endl;
-                    cout <<  "\n                 1  build new tester case-³öÌâ" << endl;
-                    cout <<  "\n                 2  search user -²éÑ¯" << endl;
-                    cout <<  "\n                 3  rank testBuilderList -ÅÅÐÐ°ñ" << endl;
-                    cout <<  "\n                 0  quit management page -ÍË³ö¹ÜÀí½çÃæ" << endl;
+                    cout <<  "\n                 1  build new tester case" << endl;//增加单词
+                    cout <<  "\n                 2  search user " << endl;//查找用户
+                    cout <<  "\n                 3  rank testBuilderList " << endl;//排行榜
+                    cout <<  "\n                 0  quit management page " << endl;//退出管理界面
                     cout <<  "              ************************" << endl;
                     do {
                         cin >> testerChoice;
@@ -729,11 +762,23 @@ int main()
                         tempTester.addProblemsNumbers();
                         break;
                     case 2: {
-                        cout << "Please input the name to search user:" << endl;
-                        string name;
-                        cin >> name;
-                        tempTester.SearchPlayer(name);
-                        tempTester.SearchTestBuilder(name);
+                        cout << "Please choose the way to search user:" << endl;
+                        cout << "              a username  \n              b userLevel    \n" << endl;
+                        char rankChoice;
+                        cin >> rankChoice;
+                        if (rankChoice == 'a') {
+                            cout << "Please input the username:" << endl;
+                            string name;
+                            cin >> name;
+                            tempTester.SearchPlayer(name);
+                            tempTester.SearchTestBuilder(name);
+                        }
+                        else {
+                            cout << "Please input the tester's level:" << endl;
+                            int level;
+                            cin >> level;
+                            tempTester.SearchTesterBylevel(level);
+                        }
                     }
 
                     break;
