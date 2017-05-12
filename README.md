@@ -1,5 +1,6 @@
-# 2017BUPT-C-_CourseDesign_1
+# 2017BUPT-C++_CourseDesign
 --------------------------------
 
 2017北邮计算机学院C++课程设计:单词消除游戏
+
 key words:面向对象 socket 文件存储方式 网络编程
